@@ -45,8 +45,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const lastRect = lastRow.getBoundingClientRect();
 
         // Position relative to the <pre> element's top-left corner (accounting for scroll)
-        const top = firstRect.top - preRect.top + codeBlock.scrollTop;
-        const height = lastRect.bottom - firstRect.top;
+        // Add vertical padding so the highlight wraps lines with breathing room
+        const pad = 4;
+        const top = firstRect.top - preRect.top + codeBlock.scrollTop - pad;
+        const height = lastRect.bottom - firstRect.top + pad * 2;
 
         const overlay = document.createElement('div');
         overlay.className = 'voice-highlight';
@@ -56,10 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
             right: 0;
             top: ${top}px;
             height: ${height}px;
-            background: rgba(255, 213, 0, 0.12);
+            background: rgba(255, 213, 0, 0.10);
             border-left: 3px solid #ffd500;
             pointer-events: none;
             z-index: 1;
+            border-radius: 3px;
             transition: top 0.3s ease, height 0.3s ease;
         `;
 
