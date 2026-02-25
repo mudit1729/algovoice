@@ -187,7 +187,7 @@ def create_session():
             'tools': get_tools_schema(),
             'tool_choice': 'auto',
             'input_audio_transcription': {
-                'model': 'gpt-4o-mini-transcription',
+                'model': 'gpt-4o-mini-transcribe',
             },
         },
     )
