@@ -20,36 +20,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // -----------------------------------------------------------------------
     // Line Highlighting
+    // Uses Prism's .line-numbers-rows spans as position references for
+    // pixel-accurate overlay placement, regardless of font/padding.
     // -----------------------------------------------------------------------
-
-    // We use a custom overlay approach for reliable dynamic highlighting
-    // rather than depending on Prism's line-highlight plugin lifecycle.
 
     function highlightLines(startLine, endLine) {
         // Clamp to valid range
         startLine = Math.max(1, Math.min(startLine, lineCount));
         endLine = Math.max(startLine, Math.min(endLine, lineCount));
 
-        // Remove existing custom highlights
-        codeBlock.querySelectorAll('.voice-line-highlight').forEach((el) => el.remove());
+        // Remove previous highlights
+        codeBlock.querySelectorAll('.voice-highlight').forEach((el) => el.remove());
 
-        // Get the code element's computed line height
-        const codeEl = codeBlock.querySelector('code');
-        const computedStyle = getComputedStyle(codeEl);
-        const lineHeight = parseFloat(computedStyle.lineHeight);
+        // Use line-numbers-rows spans as position references (1 span per line)
+        const lineRows = codeBlock.querySelectorAll('.line-numbers-rows > span');
+        if (lineRows.length === 0) return;
 
-        // The pre element's padding-top
-        const prePadding = parseFloat(getComputedStyle(codeBlock).paddingTop);
+        const preRect = codeBlock.getBoundingClientRect();
+        const firstRow = lineRows[startLine - 1];
+        const lastRow = lineRows[endLine - 1];
+        if (!firstRow || !lastRow) return;
 
-        // Create highlight overlay
+        const firstRect = firstRow.getBoundingClientRect();
+        const lastRect = lastRow.getBoundingClientRect();
+
+        // Position relative to the <pre> element's top-left corner (accounting for scroll)
+        const top = firstRect.top - preRect.top + codeBlock.scrollTop;
+        const height = lastRect.bottom - firstRect.top;
+
         const overlay = document.createElement('div');
-        overlay.className = 'voice-line-highlight';
+        overlay.className = 'voice-highlight';
         overlay.style.cssText = `
             position: absolute;
             left: 0;
             right: 0;
-            top: ${prePadding + (startLine - 1) * lineHeight}px;
-            height: ${(endLine - startLine + 1) * lineHeight}px;
+            top: ${top}px;
+            height: ${height}px;
             background: rgba(255, 213, 0, 0.12);
             border-left: 3px solid #ffd500;
             pointer-events: none;
@@ -60,34 +66,22 @@ document.addEventListener('DOMContentLoaded', () => {
         codeBlock.style.position = 'relative';
         codeBlock.appendChild(overlay);
 
-        // Update info display
-        const lineSpec =
-            startLine === endLine ? `line ${startLine}` : `lines ${startLine}-${endLine}`;
-        highlightInfoEl.textContent = `Discussing ${lineSpec}`;
-
         // Scroll the highlight into view within the code container
         const codeContainer = codeBlock.closest('.code-container');
         if (codeContainer) {
-            const overlayTop = prePadding + (startLine - 1) * lineHeight;
-            const overlayBottom = overlayTop + (endLine - startLine + 1) * lineHeight;
             const containerRect = codeContainer.getBoundingClientRect();
-            const scrollTop = codeContainer.scrollTop;
-            const visibleTop = scrollTop;
-            const visibleBottom = scrollTop + containerRect.height;
-
-            // If the highlight is not fully visible, scroll to center it
-            if (overlayTop < visibleTop || overlayBottom > visibleBottom) {
-                const targetScroll = overlayTop - containerRect.height / 2 + (overlayBottom - overlayTop) / 2;
-                codeContainer.scrollTo({
-                    top: Math.max(0, targetScroll),
-                    behavior: 'smooth',
-                });
+            if (firstRect.top < containerRect.top || lastRect.bottom > containerRect.bottom) {
+                firstRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
+
+        // Update info display
+        const label = startLine === endLine ? `line ${startLine}` : `lines ${startLine}-${endLine}`;
+        highlightInfoEl.textContent = `Discussing ${label}`;
     }
 
     function clearHighlight() {
-        codeBlock.querySelectorAll('.voice-line-highlight').forEach((el) => el.remove());
+        codeBlock.querySelectorAll('.voice-highlight').forEach((el) => el.remove());
         highlightInfoEl.textContent = '';
     }
 
