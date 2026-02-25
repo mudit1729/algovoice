@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ algo.title }} - AlgoVoice{% endblock %}
+
+{% block head %}
+<meta name="algorithm-slug" content="{{ algo.slug }}">
+<meta name="algorithm-line-count" content="{{ algo.line_count }}">
+{% endblock %}
+
+{% block content %}
+<div class="algorithm-view">
+    <!-- Code Panel (left) -->
+    <div class="code-panel">
+        <div class="code-panel-header">
+            <h1>{{ algo.title }}</h1>
+            <div class="algo-badges">
+                <span class="difficulty-badge {{ algo.difficulty }}">{{ algo.difficulty }}</span>
+                <span class="line-count">{{ algo.line_count }} lines</span>
+            </div>
+        </div>
+        <div class="code-container">
+            <pre class="line-numbers" id="codeBlock"><code class="language-python">{{ algo.code }}</code></pre>
+        </div>
+    </div>
+
+    <!-- Voice Agent Panel (right) -->
+    <div class="voice-panel">
+        <div class="voice-panel-header">
+            <div class="agent-status" id="agentStatus">
+                <span class="status-dot"></span>
+                <span class="status-text">Ready to start</span>
+            </div>
+        </div>
+
+        <div class="transcript" id="transcript">
+            <div class="transcript-placeholder">
+                Click "Start Lesson" to begin the voice walkthrough.
+            </div>
+        </div>
+
+        <div class="current-highlight" id="currentHighlight"></div>
+
+        <div class="voice-controls">
+            <button id="startBtn" class="btn btn-primary">Start Lesson</button>
+            <button id="stopBtn" class="btn btn-danger" disabled>End Session</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/realtime.js') }}"></script>
+<script src="{{ url_for('static', filename='js/algorithm.js') }}"></script>
+{% endblock %}

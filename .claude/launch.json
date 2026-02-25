@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "flask-dev",
+      "runtimeExecutable": "/Users/muditj/Desktop/Projects/learning-app/venv/bin/python",
+      "runtimeArgs": ["app.py"],
+      "port": 5001
+    }
+  ]
+}

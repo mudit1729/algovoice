@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}AlgoVoice - Learn Algorithms with Voice{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Learn Algorithms with Voice</h1>
+    <p>Pick an algorithm. A voice tutor will walk you through the code, line by line.</p>
+</section>
+
+<section class="card-grid" id="algorithmCards">
+    {% for algo in algorithms %}
+    <a href="/algorithm/{{ algo.slug }}" class="algo-card" data-difficulty="{{ algo.difficulty }}">
+        <span class="difficulty-badge {{ algo.difficulty }}">{{ algo.difficulty }}</span>
+        <h2>{{ algo.title }}</h2>
+        <div class="card-meta">
+            <span class="tags">{{ algo.tags | join(', ') }}</span>
+            <span class="time">~{{ algo.estimated_minutes }} min</span>
+        </div>
+    </a>
+    {% endfor %}
+</section>
+
+{% if not algorithms %}
+<section class="empty-state">
+    <p>No algorithms found. Add <code>.md</code> files to the <code>algorithms/</code> directory.</p>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

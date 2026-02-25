@@ -1,0 +1,506 @@
+/* ---------------------------------------------------------------------------
+   AlgoVoice - Global Styles
+   --------------------------------------------------------------------------- */
+
+:root {
+    --bg: #0a0a0f;
+    --bg-card: #141420;
+    --bg-elevated: #1a1a2e;
+    --bg-code: #1e1e2e;
+    --text: #e0e0e8;
+    --text-muted: #8888a0;
+    --accent: #7c5cfc;
+    --accent-glow: rgba(124, 92, 252, 0.3);
+    --highlight: #ffd500;
+    --highlight-bg: rgba(255, 213, 0, 0.12);
+    --green: #34d399;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --border: #2a2a3e;
+    --radius: 12px;
+    --radius-sm: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Header
+   --------------------------------------------------------------------------- */
+
+.site-header {
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+}
+
+/* ---------------------------------------------------------------------------
+   Hero
+   --------------------------------------------------------------------------- */
+
+.hero {
+    text-align: center;
+    padding: 4rem 2rem 2rem;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+}
+
+.hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Card Grid (Landing Page)
+   --------------------------------------------------------------------------- */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.algo-card {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.algo-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    background: linear-gradient(135deg, var(--accent-glow), transparent);
+}
+
+.algo-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+.algo-card:hover::before {
+    opacity: 1;
+}
+
+.algo-card h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0.75rem 0 1rem;
+    position: relative;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    position: relative;
+}
+
+.card-meta .tags {
+    opacity: 0.8;
+}
+
+.card-meta .time {
+    white-space: nowrap;
+}
+
+/* Difficulty badges */
+
+.difficulty-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.2em 0.7em;
+    border-radius: 999px;
+    position: relative;
+}
+
+.difficulty-badge.easy {
+    background: rgba(52, 211, 153, 0.15);
+    color: var(--green);
+}
+
+.difficulty-badge.medium {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--yellow);
+}
+
+.difficulty-badge.hard {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--red);
+}
+
+/* ---------------------------------------------------------------------------
+   Algorithm View (Detail Page)
+   --------------------------------------------------------------------------- */
+
+.algorithm-view {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    height: calc(100vh - 57px); /* header height */
+    overflow: hidden;
+}
+
+/* -- Code Panel -- */
+
+.code-panel {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.code-panel-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.code-panel-header h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.algo-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.line-count {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.code-container {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+}
+
+/* Override Prism.js tomorrow theme to match our palette */
+.code-container pre[class*="language-"] {
+    margin: 0;
+    border-radius: 0;
+    background: var(--bg-code) !important;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    padding: 1.5rem 1rem 1.5rem 3.5rem !important;
+    min-height: 100%;
+}
+
+.code-container code[class*="language-"] {
+    font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+}
+
+/* Line numbers styling */
+.line-numbers .line-numbers-rows {
+    border-right: 1px solid var(--border) !important;
+    padding-right: 0.5rem;
+}
+
+.line-numbers .line-numbers-rows > span::before {
+    color: #4a4a6a !important;
+}
+
+/* Line highlight styling */
+.line-highlight {
+    background: var(--highlight-bg) !important;
+    border-left: 3px solid var(--highlight) !important;
+}
+
+.line-highlight::before,
+.line-highlight::after {
+    display: none !important;
+}
+
+/* -- Voice Panel -- */
+
+.voice-panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-elevated);
+    overflow: hidden;
+}
+
+.voice-panel-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.agent-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    flex-shrink: 0;
+    transition: background 0.3s ease;
+}
+
+.agent-status.connected .status-dot {
+    background: var(--green);
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+}
+
+.agent-status.error .status-dot {
+    background: var(--red);
+}
+
+.agent-status.connecting .status-dot {
+    background: var(--yellow);
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* Transcript */
+
+.transcript {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.transcript-placeholder {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.transcript-entry {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-sm);
+    max-width: 90%;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.transcript-entry.assistant {
+    background: rgba(124, 92, 252, 0.1);
+    border: 1px solid rgba(124, 92, 252, 0.2);
+    align-self: flex-start;
+}
+
+.transcript-entry.user {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    align-self: flex-end;
+}
+
+.transcript-entry .role {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--text-muted);
+}
+
+.transcript-entry.assistant .role {
+    color: var(--accent);
+}
+
+/* Current highlight info */
+
+.current-highlight {
+    padding: 0 1.25rem;
+    font-size: 0.8rem;
+    color: var(--highlight);
+    min-height: 1.5rem;
+    flex-shrink: 0;
+}
+
+/* Voice controls */
+
+.voice-controls {
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 0.75rem;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.btn {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.btn-danger {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--red);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: rgba(248, 113, 113, 0.25);
+}
+
+/* Empty state */
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-muted);
+}
+
+.empty-state code {
+    background: var(--bg-elevated);
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .card-grid {
+        padding: 1rem;
+        grid-template-columns: 1fr;
+    }
+
+    .algorithm-view {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .code-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        max-height: 50vh;
+    }
+
+    .voice-panel {
+        min-height: 50vh;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Scrollbar styling
+   --------------------------------------------------------------------------- */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3a3a5e;
+}
